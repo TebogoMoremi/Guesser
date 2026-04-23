@@ -1,4 +1,4 @@
-const Guesser = require("./guesser");
+const Guesser = require("../src/guesser");
 
 describe("Guesser Game", () => {
   let game;
