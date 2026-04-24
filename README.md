@@ -14,6 +14,16 @@ It demonstrates:
 ---
 
 # 📁 Project Structure
+
+project/
+├── src/
+│ └── guesser.js
+├── tests/
+│ ├── guesser.test.js
+│ └── helpers.js
+├── package.json
+└── .gitignore
+
 # 🧠 How the Game Works
 
 The `Guesser` class lets a player guess a hidden number with limited lives.
