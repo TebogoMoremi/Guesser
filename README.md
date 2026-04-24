@@ -39,7 +39,9 @@ PASS  tests/guesser.test.js
 ✓ wrong guess reduces lives
 ✓ throws error when no lives left
 
-npm install
+# 📦 Install dependencies
 
+```bash
+npm install
 npm install jest --save-dev
 npm test
