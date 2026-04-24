@@ -1,5 +1,5 @@
 const Guesser = require("../src/guesser");
-const { exhaustLives } = require("./helpern");
+const { exhaustLives } = require("./helper");
 
 describe("Guesser Game", () => {
   let game;
