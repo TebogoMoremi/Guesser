@@ -28,3 +28,8 @@ PASS  tests/guesser.test.js
 ✓ returns true for correct guess
 ✓ wrong guess reduces lives
 ✓ throws error when no lives left
+
+npm install
+
+npm install jest --save-dev
+npm test
