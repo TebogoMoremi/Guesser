@@ -1,23 +1,17 @@
 const Guesser = require("../src/guesser");
+const { exhaustLives } = require("./helpern");
 
 describe("Guesser Game", () => {
   let game;
 
+  // 🔄 Fresh instance before each test
   beforeEach(() => {
     game = new Guesser(7, 2);
   });
 
-  test("correct guess returns true", () => {
+  // 🎯 CORRECT GUESS TESTS
+  test("returns true for correct guess", () => {
     expect(game.guess(7)).toBe(true);
-  });
-
-  test("wrong guess returns false", () => {
-    expect(game.guess(3)).toBe(false);
-  });
-
-  test("wrong guess reduces lives", () => {
-    game.guess(3);
-    expect(game.lives).toBe(1);
   });
 
   test("correct guess does not reduce lives", () => {
@@ -25,10 +19,66 @@ describe("Guesser Game", () => {
     expect(game.lives).toBe(2);
   });
 
-  test("throws error when no lives left", () => {
-    game.guess(1); // lives = 1
-    game.guess(2); // lives = 0
+  // ❌ WRONG GUESS TESTS
+  test("returns false for wrong guess", () => {
+    expect(game.guess(3)).toBe(false);
+  });
 
-    expect(() => game.guess(3)).toThrow("No lives left!");
+  test("wrong guess reduces lives by 1", () => {
+    game.guess(3);
+    expect(game.lives).toBe(1);
+  });
+
+  test.each([1, 2, 10])(
+    "wrong guess %i returns false",
+    (input) => {
+      expect(game.guess(input)).toBe(false);
+    }
+  );
+
+  // 🔁 MIXED BEHAVIOUR
+  test("correct guess after wrong guess still works", () => {
+    game.guess(3);
+    expect(game.guess(7)).toBe(true);
+  });
+
+  // 💥 ERROR HANDLING
+  test("throws error when no lives left", () => {
+    exhaustLives(game);
+    expect(() => game.guess(5)).toThrow("No lives left!");
+  });
+
+  test("cannot guess after lives reach zero", () => {
+    exhaustLives(game);
+    expect(() => game.guess(7)).toThrow();
+  });
+
+  test("starting with zero lives throws immediately", () => {
+    const deadGame = new Guesser(7, 0);
+    expect(() => deadGame.guess(7)).toThrow("No lives left!");
+  });
+
+  // 🧱 EDGE CASES
+  test("string input is treated as wrong guess", () => {
+    expect(game.guess("7")).toBe(false);
+  });
+
+  test("null input is treated as wrong guess", () => {
+    expect(game.guess(null)).toBe(false);
+  });
+
+  test("undefined input is treated as wrong guess", () => {
+    expect(game.guess(undefined)).toBe(false);
+  });
+
+  // 🔢 STATE SAFETY
+  test("lives never go below zero", () => {
+    exhaustLives(game);
+
+    try {
+      game.guess(3);
+    } catch {}
+
+    expect(game.lives).toBe(0);
   });
 });
